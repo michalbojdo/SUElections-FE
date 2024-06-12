@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    <p>Polls View</p>
+  <h4>Votings View</h4>
 </template>

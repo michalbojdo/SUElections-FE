@@ -14,8 +14,13 @@ export default defineConfig({
     }),
   ],
   resolve: {
+    extensions: [".ts",".vue"],
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@types':fileURLToPath(new URL('./src/types/types.ts', import.meta.url)),
+      '@views':fileURLToPath(new URL('./src/views', import.meta.url)),
+      '@services': fileURLToPath(new URL('./src/services', import.meta.url)),
+      '@components': fileURLToPath(new URL('./src/components', import.meta.url))
     }
   }
 })

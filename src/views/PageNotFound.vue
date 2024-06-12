@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    <p>404 Page not found</p>
+    <h4>404 Page not found</h4>
 </template>

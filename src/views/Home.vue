@@ -3,5 +3,5 @@
 </script>
 
 <template>
-    <p>Home View</p>
+    <h4>Home View</h4>
 </template>

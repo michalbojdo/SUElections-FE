@@ -1,12 +1,16 @@
 import { createWebHistory, createRouter } from 'vue-router'
 
-import Home from '../views/Home.vue'
-import Polls from '../views/Polls.vue'
-import PageNotFound from '../views/PageNotFound.vue'
+import Home from '@views/Home.vue'
+import Votings from '@views/Votings.vue'
+import Voters from '@views/Voters.vue'
+import PageNotFound from '@views/PageNotFound.vue'
+import VotersGroups from '@views/VotersGroups.vue'
 
 const routes = [
   { path: '/', component: Home, name: 'Home' }, 
-  { path: '/polls', component: Polls, name: 'Polls' },
+  { path: '/votings', component: Votings, name: 'Votings' },
+  { path: '/voters', component: Voters, name: 'Voters'},
+  { path: '/voters-groups', component: VotersGroups, name: 'VotersGroups'},
   { path: '/:pathMatch(.*)*', component: PageNotFound, name: 'Page not found'}
 ]
 

@@ -19,8 +19,8 @@ const drawer = ref(false)
 const setColorPalette = () =>{
   [textPrimary.value, textSecondary.value, bgPrimary.value, bgSecondary.value] =
   isDark.value ? 
-  ['text-grey-1','text-grey-5','bg-dark','bg-grey-9'] :
-  ['text-grey-1','text-grey-5','bg-primary','bg-grey-2']
+  ['text-grey-1','text-grey-5','bg-dark','bg-grey-10'] :
+  ['text-grey-1','text-grey-9','bg-primary','bg-grey-2']
 }
 
 onBeforeMount(setColorPalette)
@@ -34,13 +34,18 @@ const menuList = [
   },
   {
     icon: "poll",
-    label: "Current polls",
-    to: "/polls",
+    label: "Votings",
+    to: "/votings",
+  },
+  {
+    icon: "how_to_vote",
+    label: "Voters registry",
+    to: "/voters"
   },
   {
     icon: "group",
-    label: "Voters registry",
-    to: "/voters"
+    label: "Voters groups",
+    to: "/voters-groups"
   }
 ]
 </script>
@@ -49,7 +54,7 @@ const menuList = [
   <q-layout>
     <q-header :class="bgPrimary">
       <q-toolbar>
-        <q-toolbar-title :class="textPrimary+' q-pa-lg'"> SUElections </q-toolbar-title>
+        <q-toolbar-title class="text-grey-1 q-pa-lg"> SUElections </q-toolbar-title>
         <q-btn flat @click="drawer = !drawer" round dense icon="menu" :class="textPrimary"></q-btn>
       </q-toolbar>
     </q-header>
@@ -78,7 +83,7 @@ const menuList = [
       </q-scroll-area>
     </q-drawer>
     <q-page-container>
-      <q-page padding :class="bgSecondary+' '+textPrimary">
+      <q-page padding :class="bgSecondary+' '+textSecondary">
         <slot />
       </q-page>
     </q-page-container>
