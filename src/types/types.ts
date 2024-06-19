@@ -1,11 +1,11 @@
-export interface Voter{
+export type Voter={
     id: number,
     name: string,
     lastName: string,
     email: string
 }
-export interface VotersGroup{
+export type VotersGroup={
     id: number,
     name: string,
-    voters: Array<number>
+    voters: Array<Voter> | Array<number>
 }
