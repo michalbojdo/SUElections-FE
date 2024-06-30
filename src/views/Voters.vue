@@ -19,9 +19,7 @@ const votersTree = computed(() =>
   voters.value.map(x => ({label:`${x.name} ${x.lastName}`}) )
 )
 
-onBeforeMount(() => {
-  getVoters()
-});
+onBeforeMount(getVoters);
 
 watch(votersTree, (x)=>console.log(votersTree.value))
 
