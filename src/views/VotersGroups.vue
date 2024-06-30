@@ -8,7 +8,7 @@ const votersGroups: Ref<Array<VotersGroup>> = ref([])
 
 onBeforeMount(() => {
   loading.value = true
-  SUElectionsAPI.get("voters-groups/detailed")
+  SUElectionsAPI.get("voters-groups/extended")
     .then((response) => response.data)
     .then((data) => (votersGroups.value = data));
   loading.value = false
