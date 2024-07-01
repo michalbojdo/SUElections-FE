@@ -1,24 +1,28 @@
 <script setup lang="ts">
-import { ref, type Ref, onBeforeMount, watch, computed } from "vue";
+import { getVotersGroups } from "@/services/requests";
 import type { VotersGroup } from "@types";
-import SUElectionsAPI from "@services/axios";
+import { computed, onBeforeMount, ref, type Ref } from "vue";
 
 const loading = ref(false)
 const votersGroups: Ref<Array<VotersGroup>> = ref([])
 
-const getVotersGroups = () => {
-  loading.value = true
-  SUElectionsAPI.get("voters-groups/extended")
-    .then((response) => response.data)
-    .then((data) => (votersGroups.value = data)).then(() =>
-      loading.value = false)
-}
-
 const votersTree = computed(() =>
-  votersGroups.value.map(x => ({ label: `${x.name}`, children: x.voters.map(e => ({ label: `${e.name} ${e.lastName}` })) }))
+  votersGroups.value.map(x => (
+    { 
+      label: x.name, 
+      children: x.voters.map(v => (
+        { 
+          label: `${v.name} ${v.lastName}` 
+        }
+      )) 
+    }
+  ))
 )
 
-onBeforeMount(getVotersGroups);
+onBeforeMount(async()=>{
+  votersGroups.value = await getVotersGroups()
+  loading.value = false
+})
 
 </script>
 

@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import SUElectionsAPI from "@services/axios"
-import type { Voter } from "@types"
-import { onBeforeMount, ref, type Ref, computed, watch } from "vue"
+import { getVoters } from "@services/requests";
+import type { Voter } from "@types";
+import type { QTableColumn } from "quasar";
+import { onBeforeMount, ref, type Ref } from "vue";
 
 const loading = ref(true)
 const voters: Ref<Array<Voter>> = ref([])
-const columns = ref([
+const columns: Array<QTableColumn<Voter>> = [
   {
     name: 'name',
     label: 'Name',
@@ -29,17 +30,12 @@ const columns = ref([
     required: true,
     align: 'left',
   },
-])
+]
 
-const getVoters = () => {
-  loading.value = true;
-  SUElectionsAPI.get("voters")
-    .then((response) => response.data)
-    .then((data) => (voters.value = data))
-    .then(() => (loading.value = false));
-}
-
-onBeforeMount(getVoters);
+onBeforeMount(async()=>{
+  voters.value = await getVoters()
+  loading.value = false
+})
 
 </script>
 
