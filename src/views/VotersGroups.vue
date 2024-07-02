@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { getVotersGroups } from "@/services/requests";
+import { getExtendedVotersGroups } from "@/services/requests";
 import type { VotersGroup } from "@types";
 import { computed, onBeforeMount, ref, type Ref } from "vue";
 
@@ -20,7 +20,7 @@ const votersTree = computed(() =>
 )
 
 onBeforeMount(async()=>{
-  votersGroups.value = await getVotersGroups()
+  votersGroups.value = await getExtendedVotersGroups()
   loading.value = false
 })
 
