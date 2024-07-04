@@ -9,3 +9,15 @@ export type VotersGroup={
     name: string,
     voters: Array<Voter> | Array<number>
 }
+export type Voting={
+    id: number,
+    name: string,
+    description: string,
+    votersGroups: Array<VotersGroup> | Array<number>
+    votesFor: number,
+    votesAgainst: number,
+    votesLeft: number,
+    active: boolean,
+    startDate: Date,
+    endDate: Date
+}

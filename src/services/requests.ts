@@ -10,3 +10,8 @@ export const getExtendedVotersGroups = async () => {
     const extendedVotersGroups = await SUElectionsAPI.get("voters-groups/extended")
     return extendedVotersGroups.data
 }
+
+export const getVotings = async () => {
+    const votings = await SUElectionsAPI.get("votings")
+    return votings.data
+}
