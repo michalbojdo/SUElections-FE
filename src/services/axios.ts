@@ -1,7 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'axios' 
 
 const config: AxiosRequestConfig = {
-  baseURL: 'http://localhost:5062/api/',
+  baseURL: 'https://localhost:7122/api/',
   headers: { 
     'Access-Control-Allow-Origin':'*'    
   }
