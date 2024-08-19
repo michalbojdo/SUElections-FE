@@ -18,13 +18,13 @@ onBeforeMount(async () => {
     <div class="row items-start q-gutter-md">
       <q-responsive class="col" v-for="voting in votings">
         <div>
-        <h3>
-          {{ voting.name }}
-        </h3>
         <h4>
-          {{ voting.description }}
+          {{ voting.name }}
         </h4>
-        <q-knob
+        <h5>
+          {{ voting.description }}
+        </h5>
+        <q-circular-progress
           v-model="voting.votesFor"
           :max="voting.votesAgainst + voting.votesFor"
           :thickness="0.22"
