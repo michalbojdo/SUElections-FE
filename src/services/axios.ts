@@ -1,10 +1,7 @@
 import axios, { type AxiosRequestConfig } from 'axios' 
 
 const config: AxiosRequestConfig = {
-  baseURL: 'https://localhost:7122/api/',
-  headers: { 
-    'Access-Control-Allow-Origin':'*'    
-  }
+  baseURL: import.meta.env.VITE_SUELECTIONS_API_URL_HTTPS
 }
 
 const SUElectionsAPI = axios.create(config)
