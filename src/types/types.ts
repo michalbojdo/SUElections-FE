@@ -18,6 +18,6 @@ export type Voting={
     votesAgainst: number,
     votesLeft: number,
     active: boolean,
-    startDate: Date,
-    endDate: Date
+    startingDate: Date,
+    endingDate: Date
 }
