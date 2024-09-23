@@ -42,12 +42,10 @@ onBeforeMount(async () => {
       <q-tree 
         :nodes="votersTree" 
         node-key="label" 
-        text-color="grey-4" 
         default-expand-all
       />
       <q-inner-loading 
         :showing="loading" 
-        label-class="text-teal" 
         label-style="font-size: 1.1em" 
       />
     </section>

@@ -1,31 +1,46 @@
 <script setup lang="ts">
+import { defineProps } from "vue";
+import { deleteVoting } from "@/services/requests";
+
+const props = defineProps({
+  id: Number,
+  path: String,
+});
+
+const emit = defineEmits(['deleted'])
+
+const _delete = async (id) =>{
+  await deleteVoting(id).then(()=>
+    emit('deleted')
+  )
+}
 
 </script>
 
 <template>
-    <div class="q-pa-md">
-        <q-btn icon="more_vert" flat>
-        <q-menu>
-            <q-list>
-              <q-item clickable v-close-popup class="bg-dark text-white">
-                <q-item-section avatar>
-                    <q-icon name="edit"/>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Edit</q-item-label>
-                </q-item-section>
-              </q-item>
-      
-              <q-item clickable v-close-popup class="bg-red-5 text-white">
-                <q-item-section avatar>
-                    <q-icon name="warning"/>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label>Delete</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-          </q-btn>
-    </div>
+  <div class="q-pa-md">
+    <q-chip
+      icon="info"
+      size="sm"
+      label="Info"
+      color="blue-9"
+      text-color="white"
+    />
+    <q-chip
+      icon="edit"
+      size="sm"
+      label="Edit"
+      color="orange-7"
+      text-color="white"
+    />
+    <q-chip
+      icon="delete"
+      size="sm"
+      label="Delete"
+      color="red-5"
+      text-color="white"
+      clickable
+      @click="_delete(props.id)"
+    />
+  </div>
 </template>

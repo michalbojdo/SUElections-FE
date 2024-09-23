@@ -8,6 +8,13 @@ import crud from "@components/CRUD.vue";
 const loading = ref(false);
 const votings: Ref<Array<Voting>> = ref([]);
 
+const refresh = async (done=()=>{}) => {
+  loading.value = true
+  votings.value = await getVotings()
+  loading.value = false
+  done()
+}
+
 onBeforeMount(async () => {
   votings.value = await getVotings();
   loading.value = false;
@@ -17,15 +24,16 @@ onBeforeMount(async () => {
 <template>
   <h4>Votings View</h4>
   <div class="q-pa-md">
+    <q-pull-to-refresh @refresh="refresh">
     <q-list bordered>
-      <q-item class="col-5" v-for="voting in votings">
-        <q-item-section class="col-2 text-h5">
+      <q-item class="col" v-for="voting in votings">
+        <q-item-section class="col text-h5">
           {{ voting.name }}
         </q-item-section>
         <q-item-section>
           {{ voting.description }}
         </q-item-section>
-        <q-item-section avatar class="col-2">
+        <q-item-section avatar class="col">
           <component v-if="new Date(voting.endingDate) > new Date()">
             <q-chip size="md" icon="hourglass_empty"> Active </q-chip>
           </component>
@@ -37,32 +45,10 @@ onBeforeMount(async () => {
           </component>
         </q-item-section>
         <q-item-section class="col-1">
-          <crud />
+          <crud :id="voting.id" @deleted="refresh"/>
         </q-item-section>
       </q-item>
     </q-list>
-    <!-- <div class="row items-start q-gutter-3">
-       
-        <div class="col-3" v-for="voting in votings">
-        <h4>
-          {{ voting.name }}
-        </h4>
-        <h5>
-          {{ voting.description }}
-        </h5>
-        <q-circular-progress
-          :value="voting.votesFor"
-          :max="voting.votesAgainst + voting.votesFor"
-          :thickness="0.22"
-          show-value
-          size="100px"
-          color="teal"
-          track-color="red"
-          class="q-ma-md"
-          reverse
-          readonly
-        />
-        </div> 
-    </div> -->
+    </q-pull-to-refresh>
   </div>
 </template>

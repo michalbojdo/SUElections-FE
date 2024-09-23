@@ -15,3 +15,15 @@ export const getVotings = async () => {
     const votings = await SUElectionsAPI.get("votings")
     return votings.data
 }
+
+export const deleteVoting = async (id) =>{
+    await SUElectionsAPI.delete(`/votings/${id}`)
+}
+
+export const deleteVotersGroup = async (id) =>{
+    await SUElectionsAPI.delete(`/voters-groups/${id}`)
+}
+
+export const deleteVoter = async (id) =>{
+    await SUElectionsAPI.delete(`/voters/${id}`)
+}
