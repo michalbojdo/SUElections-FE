@@ -7,11 +7,11 @@ const props = defineProps({
   path: String,
 });
 
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['action'])
 
 const _delete = async (id) =>{
   await deleteVoting(id).then(()=>
-    emit('deleted')
+    emit('action')
   )
 }
 
