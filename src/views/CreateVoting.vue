@@ -1,63 +1,80 @@
 <script setup lang="ts">
-import { computed, onBeforeMount, ref, type Ref, watch } from "vue";
-import { getExtendedVotersGroups } from "@services/requests";
-import type { VotersGroup } from "@types";
+import { ref, type Ref } from "vue";
+import { useDark } from "@vueuse/core";
+import { createVoting as createVotingRequest } from "@services/requests";
+import type { VotersGroup, Voting } from "@types";
 import AddGroups from "@components/CreateVoting/AddGroups.vue";
+import NameDescription from "@components/CreateVoting/NameDescription.vue";
+import { date } from "quasar";
+import router from "@/router";
 
+const isDark = useDark();
 
-const loading = ref(false)
-const votersGroups: Ref<Array<VotersGroup>> = ref([])
+const loading = ref(false);
+const votersGroups: Ref<Array<VotersGroup>> = ref([]);
 
-const notSelected: Ref<Array<VotersGroup>> = ref([])
-const selected: Ref<Array<VotersGroup>> = ref([])
+const selectedVotersGroups: Ref<Array<VotersGroup>> = ref([]);
+const name = ref("");
+const description = ref("");
 
-const splitterModel = ref(25)
+const startDate = ref("");
+const endDate = ref("");
 
-const votersTree = computed(() =>
-  votersGroups.value.map(x => (
-    {
-      label: x.name,
-      children: x.voters.map(v => (
-        {
-          label: `${v.name} ${v.lastName}`
-        }
-      ))
-    }
-  ))
-)
-const group = ref(['op1'])
+const step = ref(1);
+const nextStep = () => {if(step.value<3) step.value++;}
+const previousStep = () =>{ if(step.value>1) step.value--;}
 
-const options = [
-  {
-    label: 'Option 1',
-    value: 'op1'
-  },
-  {
-    label: 'Option 2',
-    value: 'op2'
-  },
-  {
-    label: 'Option 3',
-    value: 'op3'
-  }
-]
+const createVoting = async () => {
+  const voting: Voting = {
+    name: name.value,
+    description: description.value,
+    votersGroups: [...selectedVotersGroups.value],
+    startDate: new Date(date.extractDate(startDate.value, "DD.MM.YYYY, HH:mm")),
+    endDate: new Date(date.extractDate(endDate.value, "DD.MM.YYYY, HH:mm")),
+  };
 
-onBeforeMount(async () => {
-  votersGroups.value = await getExtendedVotersGroups()
-  notSelected.value = await getExtendedVotersGroups()
-  loading.value = false
-})
-
-const selectVotersGroup = (votersGroup) => {
-  selected.value.push(votersGroup)
-  notSelected.value.splice(notSelected.value.indexOf(votersGroup), 1)
-}
-
-console.log(import.meta.env)
+  await createVotingRequest(voting)
+  
+  router.push("/votings")
+  console.info(voting);
+};
 
 </script>
 
 <template>
-  <h2>Create voting</h2> 
- <add-groups/>
+  <h4>Create voting</h4>
+  <q-stepper
+    v-model="step"
+    ref="stepper"
+    color="primary"
+    animated
+    :dark="isDark"
+  >
+    <q-step
+      :name="1"
+      title="Name and description"
+      icon="settings"
+      :done="step > 1"
+    >
+      <name-description 
+        v-model:name="name"
+        v-model:description="description"
+        v-model:startDate="startDate"
+        v-model:endDate="endDate"
+      />
+    </q-step>
+
+    <q-step :name="2" title="Voters groups" icon="group" :done="step > 2">
+      <add-groups v-model:votersGroups="selectedVotersGroups" />
+    </q-step>
+    <q-step :name="3" title="Summary" icon="list" :done="step > 3">
+      {{ selectedVotersGroups }}
+    </q-step>
+    <template v-slot:navigation>
+      <q-stepper-navigation>
+        <q-btn @click="step === 3 ? createVoting() : nextStep()" color="primary" :label="step === 3 ? 'Create' : 'Continue'" />
+        <q-btn v-if="step > 1" flat color="primary" @click="previousStep" label="Back" class="q-ml-sm" />
+      </q-stepper-navigation>
+    </template>
+  </q-stepper>
 </template>

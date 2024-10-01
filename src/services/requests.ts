@@ -16,6 +16,10 @@ export const getVotings = async () => {
     return votings.data
 }
 
+export const createVoting = async (voting) => {
+    await SUElectionsAPI.post("votings", voting)
+}
+
 export const deleteVoting = async (id) =>{
     await SUElectionsAPI.delete(`/votings/${id}`)
 }

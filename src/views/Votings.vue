@@ -69,7 +69,7 @@ onBeforeMount(async () => {
               label="Not passed"
             />
           </q-item-section>
-          <q-item-section class="col-1">
+          <q-item-section class="col-2">
             <crud :id="voting.id" @action="refresh" />
           </q-item-section>
         </q-item>
