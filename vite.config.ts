@@ -4,7 +4,17 @@ import { quasar, transformAssetUrls } from '@quasar/vite-plugin'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
+
 export default defineConfig({
+  server:{
+    port: 31478,
+    allowedHosts:[
+      process.env.VITE_SUELECTIONS_ALLOWED_HOST
+    ]
+  },
+  preview:{
+    port: 31478
+  },
   plugins: [
     vue({
       template: { transformAssetUrls },
