@@ -2,6 +2,7 @@
 import { ref, watch, defineModel, computed } from "vue";
 import { useDark } from "@vueuse/core";
 import { date } from "quasar";
+import { CreateVoting } from "@/services/validators";
 
 const isDark = useDark();
 
@@ -13,12 +14,13 @@ const description = defineModel("description", {
 });
 const startDate = defineModel("startDate", {
   type: String,
-  required: true,
+  required: true, 
 });
 const endDate = defineModel("endDate", {
   type:String,
-  required: true,
+  required: true, 
 });
+
 
 // const startDateOptions = computed(()=>(availableDate) =>
 //   availableDate >= date.formatDate(now, "YYYY.MM.DD, HH:mm")
@@ -40,6 +42,8 @@ const endDate = defineModel("endDate", {
       class="col-12 col-md-3 q-pa-md"
       outlined
       :dark="isDark"
+      lazy-rules
+      :rules="[val => CreateVoting.validateName(val) || 'At least three characters']"
     />
     <q-input
       v-model="description"
@@ -48,13 +52,16 @@ const endDate = defineModel("endDate", {
       autogrow
       outlined
       :dark="isDark"
+      lazy-rules
+      :rules="[val => CreateVoting.validateDescription(val) || 'At least three characters']"
     />
     <div class="col-12 col-md-6 q-pa-md">
       <q-input
         v-model="startDate"
         :dark="isDark"
         label="Start date"
-        outlined
+        outlined  
+        :rules="[val => CreateVoting.validateIsFutureDate(startDate) || 'Must be future date']"
       >
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
@@ -62,6 +69,7 @@ const endDate = defineModel("endDate", {
               <q-date
                 v-model="startDate"
                 mask="DD.MM.YYYY, HH:mm" 
+                minimal
               >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -78,7 +86,7 @@ const endDate = defineModel("endDate", {
               transition-show="scale"
               transition-hide="scale"
             >
-              <q-time v-model="startDate" mask="DD.MM.YYYY, HH:mm" format24h>
+              <q-time v-model="startDate" mask="DD.MM.YYYY, HH:mm" format24h minimal>
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>
@@ -93,7 +101,11 @@ const endDate = defineModel("endDate", {
         v-model="endDate"
         :dark="isDark"
         label="End date"
-        outlined
+        outlined  
+        :rules="[
+          val => CreateVoting.validateEndDateAfterStartDate(startDate, val) || 'End date must be after start date',
+          val => CreateVoting.validateIsFutureDate(val) || 'Must be future date'
+          ]"
       >
         <template v-slot:prepend>
           <q-icon name="event" class="cursor-pointer">
@@ -101,6 +113,7 @@ const endDate = defineModel("endDate", {
               <q-date
                 v-model="endDate"
                 mask="DD.MM.YYYY, HH:mm" 
+                minimal
               >
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
@@ -113,7 +126,7 @@ const endDate = defineModel("endDate", {
         <template v-slot:append>
           <q-icon name="access_time" class="cursor-pointer">
             <q-popup-proxy>
-              <q-time v-model="endDate" mask="DD.MM.YYYY, HH:mm" format24h>
+              <q-time v-model="endDate" mask="DD.MM.YYYY, HH:mm" format24h minimal>
                 <div class="row items-center justify-end">
                   <q-btn v-close-popup label="Close" color="primary" flat />
                 </div>

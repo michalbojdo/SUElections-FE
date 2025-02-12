@@ -4,7 +4,7 @@ import { useDark } from "@vueuse/core";
 import { createVoting as createVotingRequest } from "@services/requests";
 import type { VotersGroup, Voting } from "@types";
 import AddGroups from "@components/CreateVoting/AddGroups.vue";
-import NameDescription from "@components/CreateVoting/NameDescription.vue";
+import NameDescription from "@/components/CreateVoting/GeneralInfo.vue";
 import { date } from "quasar";
 import router from "@/router";
 

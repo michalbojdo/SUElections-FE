@@ -20,12 +20,16 @@ onBeforeMount(async () => {
   votings.value = await getVotings();
   loading.value = false;
 });
+
+const isEnvDev = import.meta.env.DEV
+
 </script>
 
 <template>
   <h4>
     Votings View
     <q-chip
+      v-if="isEnvDev"
       size="md"
       icon="add"
       color="green-5"
@@ -47,13 +51,13 @@ onBeforeMount(async () => {
           </q-item-section>
           <q-item-section avatar class="col">
             <q-chip
-              v-if="new Date(voting.endingDate) > new Date()"
+              v-if="new Date(voting.endDate) > new Date()"
               size="md"
               icon="hourglass_empty"
               label="Active"
             />
             <q-chip
-              v-else-if="voting.votesFor > voting.votesAgainst"
+              v-else-if="(voting.votesFor ?? 0) > (voting.votesAgainst ?? 0)"
               size="md"
               icon="check_circle"
               color="green-5"
@@ -69,8 +73,11 @@ onBeforeMount(async () => {
               label="Not passed"
             />
           </q-item-section>
-          <q-item-section class="col-2">
-            <crud :id="voting.id" @action="refresh" />
+          <q-item-section v-if="isEnvDev" class="col-2">
+            <crud
+              :id="voting.id"
+              @action="refresh"
+            />
           </q-item-section>
         </q-item>
       </q-list>

@@ -1,5 +1,6 @@
 import type { Voter } from "@/types/types"
 import SUElectionsAPI from "@services/axios"
+import { validateCreateVoting } from './validators'
 
 export const getVoters = async () => { 
     const voters = await SUElectionsAPI.get("voters")
@@ -17,7 +18,8 @@ export const getVotings = async () => {
 }
 
 export const createVoting = async (voting) => {
-    await SUElectionsAPI.post("votings", voting)
+    if(validateCreateVoting(voting))
+        await SUElectionsAPI.post("votings", voting)
 }
 
 export const deleteVoting = async (id) =>{
